@@ -1,0 +1,2 @@
+research_model_serving_endpoint: openai-endpoint
+databricks_secret_scope_name: rsa-project-secrets

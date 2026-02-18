@@ -1,0 +1,52 @@
+# Databricks Asset Bundle configuration, more info here: https://docs.databricks.com/en/dev-tools/bundles/settings.html
+bundle:
+  name: "rsa_project_bundle"
+
+include:
+  - resources/*.yml
+
+variables:
+  source_catalog:
+    description: Set the source system catalog name
+    default: rsa_dev
+  
+  source_database:
+    description: Set the source system database name
+    default: rsa_db  
+
+  target_catalog:
+    description: Set the target system catalog name
+    default: rsa_uat  
+
+  target_database:
+    description: Set the target system database name
+    default: rsa_db 
+
+  model_name:
+    description: Set the current agent/model name
+    default: research_system_agent
+
+  model_version:
+    description: Set the current agent/model version
+    default: 1 
+
+  model_endpoint_name:     
+    description: Set the model endpoint name
+    default: rsa_endpoint_uat
+
+targets:
+  uat:
+    workspace:
+      host: https://adb-2312142220665350.10.azuredatabricks.net/
+      root_path: /Workspace/Users/${workspace.current_user.userName}/${bundle.target}/${bundle.name}
+    variables:
+      source_catalog: rsa_dev
+      source_database: rsa_db
+      target_catalog: rsa_uat
+      target_database: rsa_db
+      model_name: research_system_agent
+      model_version: 1
+      model_endpoint_name: rsa_endpoint_uat
+
+
+  

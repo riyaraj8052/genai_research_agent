@@ -1,0 +1,47 @@
+resources:
+  jobs:
+    delete_deployment:
+      name: delete_deployment
+      tasks:
+        - task_key: delete_deployment_task
+          notebook_task:
+            notebook_path: ../src/B03_delete_deployment.ipynb
+            source: WORKSPACE
+          job_cluster_key: delete_deployment_task_cluster
+          libraries:
+            - pypi:
+                package: langgraph==0.5.3
+            - pypi:
+                package: databricks-langchain==0.8.2
+            - pypi:
+                package: databricks-agents==1.8.1
+            - pypi:
+                package: mlflow-skinny[databricks]==3.5.1
+            - pypi:
+                package: uv==0.9.7
+            - pypi:
+                package: tavily-python==0.7.12
+      job_clusters:
+        - job_cluster_key: delete_deployment_task_cluster
+          new_cluster:
+            cluster_name: ""
+            spark_version: 17.3.x-scala2.13
+            node_type_id: Standard_DS3_v2
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            use_ml_runtime: true
+            is_single_node: true
+      queue:
+        enabled: true
+      parameters:
+        - name: target_catalog
+          default: ${var.target_catalog}
+        - name: target_database
+          default: ${var.target_database}
+        - name: model_name
+          default: ${var.model_name}
+        - name: model_version
+          default: ${var.model_version}
